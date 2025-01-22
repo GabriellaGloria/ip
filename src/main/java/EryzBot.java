@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class EryzBot {
     static void greet(){
         String logo = "   ____             ___       __ \n"
@@ -14,9 +16,22 @@ public class EryzBot {
         System.out.println("Bye! Hope to see you again!");
         System.out.println("__________________________________________________________");
     }
-    public static void main(String[] args) {
+    static void echo(Scanner scanner){
+        String input = scanner.nextLine();
+        System.out.println("__________________________________________________________");
+        if (input.equalsIgnoreCase("bye")){
+            exit();
+        } else {
+            System.out.println(input);
+            System.out.println("__________________________________________________________");
+            echo(scanner); 
+        }
+    }
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
         greet();
-        exit();
+        echo(scanner);
+        scanner.close();
     }
 }
 
