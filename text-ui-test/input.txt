@@ -1,0 +1,11 @@
+list
+todo do your homework
+list
+mark 1
+deadline watch lecture /by Tuesday
+mark 2
+list
+unmark 1
+event meet friends /from 14.00 /to 16.00
+list
+bye
