@@ -15,7 +15,7 @@ public class EryzBot {
         System.out.println("How can I assist you?");
         System.out.println("__________________________________________________________\n");
     }
-    
+
     public static void exit(){
         System.out.println("Bye! Hope to see you again!");
         System.out.println("__________________________________________________________");
@@ -39,67 +39,47 @@ public class EryzBot {
         tasks.get(idx - 1).unmark();
     }
 
-    public static void echo(Scanner scanner){
-        String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("bye")){
-            exit();
-        } else if (input.equalsIgnoreCase("list")){
-            list();
-            System.out.println("__________________________________________________________\n");
-            echo(scanner);
-        } else if (input.toLowerCase().startsWith("mark")){
-            int idx = Integer.parseInt(input.split(" ")[1]);
-            mark(idx);
-            System.out.println("__________________________________________________________\n");
-            echo(scanner);
-        } else if (input.toLowerCase().startsWith("unmark")){
-            int idx = Integer.parseInt(input.split(" ")[1]);
-            unmark(idx);
-            System.out.println("__________________________________________________________\n");
-            echo(scanner);
-        } else if (input.toLowerCase().startsWith("todo")){
-            input = input.substring(5);
-            Task newTask = new Task(input, "[T]");
-            tasks.add(newTask);
-            System.out.println("Added this todo :");
-            newTask.printTask();
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    public static void echo(Scanner scanner) throws EryzBotException {
+        try {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("bye")) {
+                exit();
+                return;
+            } else if (input.equalsIgnoreCase("list")) {
+                list();
+            } else if (input.toLowerCase().startsWith("mark")) {
+                int idx = Integer.parseInt(input.split(" ")[1]);
+                mark(idx);
+            } else if (input.toLowerCase().startsWith("unmark")) {
+                int idx = Integer.parseInt(input.split(" ")[1]);
+                unmark(idx);
+            } else if (input.toLowerCase().startsWith("todo")) {
+                Task newTask = TodoTask.TodoTaskCreate(input);
+                tasks.add(newTask);
+                System.out.println("Added this todo :");
+                newTask.printTask();
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            } else if (input.toLowerCase().startsWith("deadline")) {
+                Task newTask = DeadlineTask.DeadlineTaskCreate(input);
+                tasks.add(newTask);
+                System.out.println("Added this deadline :");
+                newTask.printTask();
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            } else if (input.toLowerCase().startsWith("event")) {
+                Task newTask = EventTask.EventTaskCreate(input);
+                tasks.add(newTask);
+                System.out.println("Added this event :");
+                newTask.printTask();
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            } else {
+                throw new EryzBotException("I don't recognize that task. Please input todo/deadline/event only!");
+            }
             System.out.println("__________________________________________________________\n");
             echo(scanner); 
-        } else if (input.toLowerCase().startsWith("deadline")){
-            String desc[] = input.substring(9).split(" /by ");
-            String name = desc[0];
-            String by = desc[1];
-            Task newTask = new Task(name, "[D]", by);
-            tasks.add(newTask);
-            System.out.println("Added this deadline :");
-            newTask.printTask();
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-            System.out.println("__________________________________________________________\n");
-            echo(scanner); 
-        } else if (input.toLowerCase().startsWith("event")){
-            String[] desc = input.substring(6).split(" /from ");
-            String name = desc[0];
-            String[] date = desc[1].split(" /to ");
-            String from = date[0];
-            String to = date[1];
-            Task newTask = new Task(name, "[E]", from, to);
-            tasks.add(newTask);
-            System.out.println("Added this event :");
-            newTask.printTask();
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        } catch (RuntimeException e) {
+            System.out.println("Error: " + e.getMessage());
             System.out.println("__________________________________________________________\n");
             echo(scanner);  
-        } else {
-            // Normal tasks & echo
-            System.out.println(input);
-            Task newTask = new Task(input, "[ ]");
-            tasks.add(newTask);
-            System.out.println("Added this task :");
-            newTask.printTask();
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-            System.out.println("__________________________________________________________\n");
-            echo(scanner); 
         }
     }
     public static void main(String[] args){

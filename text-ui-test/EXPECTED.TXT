@@ -42,13 +42,13 @@ This task is not done now, please do it soon!
 __________________________________________________________
 
 Added this event :
-[E][ ] meet friends(from: 14.00 to: 16.00)
+[E][ ] meet friends (from: 14.00 to: 16.00)
 Now you have 3 tasks in the list.
 __________________________________________________________
 
 [T][ ] do your homework
 [D][X] watch lecture (by: Tuesday)
-[E][ ] meet friends(from: 14.00 to: 16.00)
+[E][ ] meet friends (from: 14.00 to: 16.00)
 __________________________________________________________
 
 Bye! Hope to see you again!

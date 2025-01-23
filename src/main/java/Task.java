@@ -37,6 +37,6 @@ public class Task {
 
     public void printTask(){
         String mark = isMarked ? "[X]" : "[ ]";
-        System.out.println(type + mark + " " + name);
+        System.out.print(type + mark + " " + name);
     }
 }
