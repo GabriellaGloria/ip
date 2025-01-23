@@ -35,6 +35,10 @@ public class EryzBot {
         tasks.get(idx - 1).mark();
     }
 
+    public static void delete(int idx){
+        tasks.remove(idx - 1);
+    }
+
     public static void unmark(int idx){
         tasks.get(idx - 1).unmark();
     }
@@ -50,6 +54,10 @@ public class EryzBot {
             } else if (input.toLowerCase().startsWith("mark")) {
                 int idx = Integer.parseInt(input.split(" ")[1]);
                 mark(idx);
+            } else if (input.toLowerCase().startsWith("delete")) {
+                int idx = Integer.parseInt(input.split(" ")[1]);
+                delete(idx);
+                System.out.println("Task deleted!");
             } else if (input.toLowerCase().startsWith("unmark")) {
                 int idx = Integer.parseInt(input.split(" ")[1]);
                 unmark(idx);
