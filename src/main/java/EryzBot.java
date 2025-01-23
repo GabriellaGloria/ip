@@ -2,10 +2,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EryzBot {
-    private static ArrayList<String> inputs = new ArrayList<>();
-    private static ArrayList<Boolean> marked = new ArrayList<>();
+    private static ArrayList<Task> tasks = new ArrayList<>();
 
-    static void greet(){
+    public static void greet(){
         String logo = "   ____             ___       __ \n"
                     + "  / __/_____ _____ / _ )___  / /_\n"
                     + " / _// __/ // /_ // _  / _ \\/ __/\n"
@@ -16,34 +15,31 @@ public class EryzBot {
         System.out.println("How can I assist you?");
         System.out.println("__________________________________________________________\n");
     }
-    static void exit(){
+    
+    public static void exit(){
         System.out.println("Bye! Hope to see you again!");
         System.out.println("__________________________________________________________");
     }
-    static void printTask(int idx){
-        if (marked.get(idx-1)) {
-            System.out.println("[X] " + inputs.get(idx - 1));
-        } else {
-            System.out.println("[ ] " + inputs.get(idx - 1));
-        }
+
+    public static void printTask(int idx){
+        tasks.get(idx - 1).printTask();
     }
-    static void list(){
-        for (int i = 0; i < inputs.size(); i++) {
-            System.out.print(i+1 + ". ");
+
+    public static void list(){
+        for (int i = 0; i < tasks.size(); i++) {
             printTask(i + 1);
         }
     }
-    static void mark(int idx){
-        System.out.println("This task is marked as done now, yay!");
-        System.out.println("  [X] " + inputs.get(idx - 1));
-        marked.set(idx-1, true);
+
+    public static void mark(int idx){
+        tasks.get(idx - 1).mark();
     }
-    static void unmark(int idx){
-        System.out.println("This task is not done now, please do it soon!");
-        System.out.println("  [ ] " + inputs.get(idx - 1));
-        marked.set(idx-1, false);
+
+    public static void unmark(int idx){
+        tasks.get(idx - 1).unmark();
     }
-    static void echo(Scanner scanner){
+
+    public static void echo(Scanner scanner){
         String input = scanner.nextLine();
         if (input.equalsIgnoreCase("bye")){
             exit();
@@ -61,10 +57,47 @@ public class EryzBot {
             unmark(idx);
             System.out.println("__________________________________________________________\n");
             echo(scanner);
+        } else if (input.toLowerCase().startsWith("todo")){
+            input = input.substring(5);
+            Task newTask = new Task(input, "[T]");
+            tasks.add(newTask);
+            System.out.println("Added this todo :");
+            newTask.printTask();
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println("__________________________________________________________\n");
+            echo(scanner); 
+        } else if (input.toLowerCase().startsWith("deadline")){
+            String desc[] = input.substring(9).split(" /by ");
+            String name = desc[0];
+            String by = desc[1];
+            Task newTask = new Task(name, "[D]", by);
+            tasks.add(newTask);
+            System.out.println("Added this deadline :");
+            newTask.printTask();
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println("__________________________________________________________\n");
+            echo(scanner); 
+        } else if (input.toLowerCase().startsWith("event")){
+            String[] desc = input.substring(6).split(" /from ");
+            String name = desc[0];
+            String[] date = desc[1].split(" /to ");
+            String from = date[0];
+            String to = date[1];
+            Task newTask = new Task(name, "[E]", from, to);
+            tasks.add(newTask);
+            System.out.println("Added this event :");
+            newTask.printTask();
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println("__________________________________________________________\n");
+            echo(scanner);  
         } else {
+            // Normal tasks & echo
             System.out.println(input);
-            marked.add(false);
-            inputs.add(input);
+            Task newTask = new Task(input, "[ ]");
+            tasks.add(newTask);
+            System.out.println("Added this task :");
+            newTask.printTask();
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
             System.out.println("__________________________________________________________\n");
             echo(scanner); 
         }
