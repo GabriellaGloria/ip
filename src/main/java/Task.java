@@ -1,28 +1,14 @@
 import java.io.Serializable;
 
 public class Task implements Serializable {
-    private String name;
-    private String type;
-    private boolean isMarked;
-    private String by;   
-    private String from; 
-    private String to;  
+    protected String name;
+    protected String type;
+    protected boolean isMarked;
 
     public Task(String name, String type) {
         this.name = name;
         this.type = type;
         this.isMarked = false;
-    }
-
-    public Task(String name, String type, String by) {
-        this(name + " (by: " + by + ")", type);
-        this.by = by;
-    }
-
-    public Task(String name, String type, String from, String to) {
-        this(name + "(from: " + from + " to: " + to + ")", type);
-        this.from = from;
-        this.to = to;
     }
 
     public void mark() {
