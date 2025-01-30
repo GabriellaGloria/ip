@@ -1,8 +1,41 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 
 public class EryzBot {
-    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static final String DATAPATH = "../data/eryz.txt";
+    private static ArrayList<Task> tasks = fetchTasks(DATAPATH);
+
+    @SuppressWarnings("unchecked")
+    static ArrayList<Task> fetchTasks(String filepath) throws EryzBotException {
+        try (var fin = new FileInputStream(filepath);
+             var ois = new ObjectInputStream(fin)) {
+            return (ArrayList<Task>) ois.readObject();
+        } catch (FileNotFoundException e) {
+            return new ArrayList<>();
+        } catch (Exception e) {
+            throw new EryzBotException("Couldn't fetch tasks.");
+        }
+    }
+
+    static void saveTasks(String filepath, ArrayList<Task> newTasks) throws EryzBotException {
+        File file = new File(filepath);
+        file.getParentFile().mkdirs();
+
+        try (var fout = new FileOutputStream(filepath);
+             var oos = new ObjectOutputStream(fout)) {
+            oos.writeObject(tasks);
+        } catch (IOException e) {
+            throw new EryzBotException("Couldn't save tasks.");
+        }
+    }
 
     public static void greet(){
         String logo = "   ____             ___       __ \n"
@@ -26,21 +59,28 @@ public class EryzBot {
     }
 
     public static void list(){
-        for (int i = 0; i < tasks.size(); i++) {
-            printTask(i + 1);
+        if (tasks.isEmpty()) {
+            System.out.println("You have no tasks. Yay!");
+        } else {
+            for (int i = 0; i < tasks.size(); i++) {
+                printTask(i + 1);
+            }
         }
     }
 
     public static void mark(int idx){
         tasks.get(idx - 1).mark();
+        saveTasks(DATAPATH, tasks);
     }
 
     public static void delete(int idx){
         tasks.remove(idx - 1);
+        saveTasks(DATAPATH, tasks);
     }
 
     public static void unmark(int idx){
         tasks.get(idx - 1).unmark();
+        saveTasks(DATAPATH, tasks);
     }
 
     public static void echo(Scanner scanner) throws EryzBotException {
@@ -64,18 +104,21 @@ public class EryzBot {
             } else if (input.toLowerCase().startsWith("todo")) {
                 Task newTask = TodoTask.TodoTaskCreate(input);
                 tasks.add(newTask);
+                saveTasks(DATAPATH, tasks);
                 System.out.println("Added this todo :");
                 newTask.printTask();
                 System.out.println("Now you have " + tasks.size() + " tasks in the list.");
             } else if (input.toLowerCase().startsWith("deadline")) {
                 Task newTask = DeadlineTask.DeadlineTaskCreate(input);
                 tasks.add(newTask);
+                saveTasks(DATAPATH, tasks);
                 System.out.println("Added this deadline :");
                 newTask.printTask();
                 System.out.println("Now you have " + tasks.size() + " tasks in the list.");
             } else if (input.toLowerCase().startsWith("event")) {
                 Task newTask = EventTask.EventTaskCreate(input);
                 tasks.add(newTask);
+                saveTasks(DATAPATH, tasks);
                 System.out.println("Added this event :");
                 newTask.printTask();
                 System.out.println("Now you have " + tasks.size() + " tasks in the list.");
