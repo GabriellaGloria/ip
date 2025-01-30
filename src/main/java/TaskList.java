@@ -1,33 +1,37 @@
 import java.util.ArrayList;
 
 public class TaskList {
-    private final ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
-    TaskList() {
-        this(new ArrayList<>());
+    public TaskList() {
+        this.tasks = new ArrayList<>();
     }
-    TaskList(ArrayList<Task> tasks) {
+
+    public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
-    void add(Task task) {
+
+    public void addTask(Task task) {
         tasks.add(task);
     }
-    void mark(int index) {
-        tasks.get(index).mark();
+
+    public void deleteTask(int idx) {
+        tasks.remove(idx - 1);
     }
-    void unmark(int index) {
-        tasks.get(index).unmark();
+
+    public void markTask(int idx) {
+        tasks.get(idx - 1).mark();
     }
-    void printTask(int idx){
-        tasks.get(idx - 1).printTask();
+
+    public void unmarkTask(int idx) {
+        tasks.get(idx - 1).unmark();
     }
-    void list(){
-        if (tasks.isEmpty()) {
-            System.out.println("You have no tasks. Yay!");
-        } else {
-            for (int i = 0; i < tasks.size(); i++) {
-                printTask(i + 1);
-            }
-        }
+
+    public int size() {
+        return tasks.size();
+    }
+
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 }
