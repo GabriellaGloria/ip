@@ -1,12 +1,15 @@
-public class DeadlineTask extends Task {
-    String by;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-    public DeadlineTask(String input, String by){
-        super(input, "[D]");
+public class DeadlineTask extends Task {
+    private LocalDate by;
+
+    public DeadlineTask(String name, LocalDate by){
+        super(name, "[D]");
         this.by = by;
     }
 
-    static Task DeadlineTaskCreate(String input){
+    public static Task DeadlineTaskCreate(String input){
         try {
             String[] desc = input.substring(9).split(" /by ", 2);
             String name = desc[0];
@@ -15,15 +18,19 @@ public class DeadlineTask extends Task {
             if (name.isEmpty() || by.isEmpty()) {
                 throw new EryzBotException("The description or deadline cannot be empty.");
             }
-            return new DeadlineTask(name, by);
-        } catch (RuntimeException e) {
-            throw new EryzBotException("Please use this format : deadline <description> /by <date>");
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate deadline = LocalDate.parse(by, formatter);
+
+            return new DeadlineTask(name, deadline);
+        } catch (Exception e) {
+            throw new EryzBotException("Invalid format. Use: deadline <description> /by <yyyy-MM-dd>");
         }
     }
 
     @Override
     public void printTask(){
         super.printTask();
-        System.out.println(" (by: " + by + ")");
+        System.out.println(" (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
     }
 }

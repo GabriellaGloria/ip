@@ -8,30 +8,29 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-
 public class EryzBot {
     private static final String DATAPATH = "../data/eryz.txt";
     private static ArrayList<Task> tasks = fetchTasks(DATAPATH);
 
     @SuppressWarnings("unchecked")
     static ArrayList<Task> fetchTasks(String filepath) throws EryzBotException {
-        try (var fin = new FileInputStream(filepath);
-             var ois = new ObjectInputStream(fin)) {
-            return (ArrayList<Task>) ois.readObject();
-        } catch (FileNotFoundException e) {
+        File file = new File(filepath);
+        if (!file.exists() || file.length() == 0) {
             return new ArrayList<>();
+        }
+        try (var fin = new FileInputStream(filepath); var ois = new ObjectInputStream(fin)) {
+            return (ArrayList<Task>) ois.readObject();
         } catch (Exception e) {
             throw new EryzBotException("Couldn't fetch tasks.");
         }
     }
-
+    
     static void saveTasks(String filepath, ArrayList<Task> newTasks) throws EryzBotException {
         File file = new File(filepath);
         file.getParentFile().mkdirs();
 
-        try (var fout = new FileOutputStream(filepath);
-             var oos = new ObjectOutputStream(fout)) {
-            oos.writeObject(tasks);
+        try (var fout = new FileOutputStream(filepath); var oos = new ObjectOutputStream(fout)) {
+            oos.writeObject(newTasks);
         } catch (IOException e) {
             throw new EryzBotException("Couldn't save tasks.");
         }
@@ -83,23 +82,31 @@ public class EryzBot {
         saveTasks(DATAPATH, tasks);
     }
 
-    public static void echo(Scanner scanner) throws EryzBotException {
+    private static int parseIndex(String input) throws EryzBotException {
         try {
-            String input = scanner.nextLine();
+            return Integer.parseInt(input.split(" ")[1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new EryzBotException("Invalid index.");
+        }
+    }
+
+    public static void echo(Scanner scanner) throws EryzBotException {
+        String input = scanner.nextLine();
+        try {
             if (input.equalsIgnoreCase("bye")) {
                 exit();
                 return;
             } else if (input.equalsIgnoreCase("list")) {
                 list();
             } else if (input.toLowerCase().startsWith("mark")) {
-                int idx = Integer.parseInt(input.split(" ")[1]);
+                int idx = parseIndex(input);
                 mark(idx);
             } else if (input.toLowerCase().startsWith("delete")) {
-                int idx = Integer.parseInt(input.split(" ")[1]);
+                int idx = parseIndex(input);
                 delete(idx);
                 System.out.println("Task deleted!");
             } else if (input.toLowerCase().startsWith("unmark")) {
-                int idx = Integer.parseInt(input.split(" ")[1]);
+                int idx = parseIndex(input);
                 unmark(idx);
             } else if (input.toLowerCase().startsWith("todo")) {
                 Task newTask = TodoTask.TodoTaskCreate(input);
@@ -125,19 +132,21 @@ public class EryzBot {
             } else {
                 throw new EryzBotException("I don't recognize that task. Please input todo/deadline/event only!");
             }
-            System.out.println("__________________________________________________________\n");
-            echo(scanner); 
         } catch (RuntimeException e) {
             System.out.println("Error: " + e.getMessage());
-            System.out.println("__________________________________________________________\n");
-            echo(scanner);  
         }
+        System.out.println("__________________________________________________________\n");
+        echo(scanner);
     }
+
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         greet();
-        echo(scanner);
+        try {
+            echo(scanner);
+        } catch (EryzBotException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
         scanner.close();
     }
 }
-
