@@ -1,3 +1,5 @@
+package eryz;
+
 import java.util.Scanner;
 
 public class EryzBot {
@@ -60,6 +62,6 @@ public class EryzBot {
     }
 
     public static void main(String[] args) {
-        new EryzBot("../data/eryz.txt").run();
+        new EryzBot("./data/eryz.txt").run();
     }
 }

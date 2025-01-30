@@ -1,3 +1,5 @@
+package eryz;
+
 public class TodoTask extends Task {
 
     public TodoTask(String input){

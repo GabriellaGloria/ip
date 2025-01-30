@@ -1,3 +1,5 @@
+package eryz;
+
 public class Parser {
 
     public static int parseIndex(String input) throws EryzBotException {
