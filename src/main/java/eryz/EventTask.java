@@ -3,17 +3,23 @@ package eryz;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents an event task in the EryzBot application.
+ * This task includes a description, as well as a date range from a starting date to an ending date.
+ *
+ * Event tasks are stored with a description and a date range, with the dates formatted as "yyyy-MM-dd".
+ */
 public class EventTask extends Task {
     private LocalDate from;
     private LocalDate to;
 
-    public EventTask(String name, LocalDate from, LocalDate to){
+    public EventTask(String name, LocalDate from, LocalDate to) {
         super(name, "[E]");
         this.from = from;
         this.to = to;
     }
 
-    public static Task EventTaskCreate(String input){
+    public static Task eventTaskCreate(String input) {
         try {
             String[] desc = input.substring(6).split(" /from | /to ", 3);
             String name = desc[0];
@@ -35,8 +41,9 @@ public class EventTask extends Task {
     }
 
     @Override
-    public void printTask(){
+    public void printTask() {
         super.printTask();
-        System.out.println(" (from: " + from.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " to: " + to.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
+        System.out.println(" (from: " + from.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
+                + " to: " + to.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
     }
 }

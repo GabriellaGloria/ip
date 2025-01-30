@@ -1,5 +1,9 @@
 package eryz;
 
+/**
+ * A utility class for parsing user input into appropriate task objects.
+ * It provides methods to parse task descriptions and indices from user commands.
+ */
 public class Parser {
 
     public static int parseIndex(String input) throws EryzBotException {
@@ -12,11 +16,11 @@ public class Parser {
 
     public static Task parseTask(String input) throws EryzBotException {
         if (input.toLowerCase().startsWith("todo")) {
-            return TodoTask.TodoTaskCreate(input);
+            return TodoTask.todoTaskCreate(input);
         } else if (input.toLowerCase().startsWith("deadline")) {
-            return DeadlineTask.DeadlineTaskCreate(input);
+            return DeadlineTask.deadlineTaskCreate(input);
         } else if (input.toLowerCase().startsWith("event")) {
-            return EventTask.EventTaskCreate(input);
+            return EventTask.eventTaskCreate(input);
         } else {
             throw new EryzBotException("I don't recognize that task. Please input todo/deadline/event only!");
         }

@@ -2,6 +2,11 @@ package eryz;
 
 import java.util.ArrayList;
 
+/**
+ * The Ui class handles all the user interface interactions for the EryzBot application.
+ * It is responsible for displaying messages, task lists, errors, and other relevant
+ * information to the user in a user-friendly format.
+ */
 public class Ui {
 
     public void greet() {
