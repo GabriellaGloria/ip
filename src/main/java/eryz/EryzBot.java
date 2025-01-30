@@ -33,6 +33,9 @@ public class EryzBot {
                     } else {
                         ui.showTaskList(tasks.getTasks());
                     }
+                } else if (input.toLowerCase().startsWith("find")) {
+                    String keyword = Parser.parseFind(input);
+                    ui.showMatchingTasks(tasks.findTasks(keyword));
                 } else if (input.toLowerCase().startsWith("mark")) {
                     int idx = Parser.parseIndex(input);
                     tasks.markTask(idx);

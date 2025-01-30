@@ -52,4 +52,17 @@ public class Ui {
             tasks.get(i).printTask();
         }
     }
+
+    public void showMatchingTasks(ArrayList<Task> matchingTasks) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No tasks found.");
+        } else {
+            System.out.println("Here, tasks that match your keyword:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.print((i + 1) + ".");
+                matchingTasks.get(i).printTask();
+            }
+        }
+    }
+    
 }
