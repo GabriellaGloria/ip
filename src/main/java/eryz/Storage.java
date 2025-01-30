@@ -8,6 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+/**
+ * A class for handling the storage of tasks in a file.
+ * This class provides methods to fetch tasks from a file and save tasks to a file.
+ * It supports object serialization for storing and retrieving tasks as a list.
+ */
 public class Storage {
     private String filepath;
 

@@ -2,6 +2,12 @@ package eryz;
 
 import java.io.Serializable;
 
+
+/**
+ * Represents a task in the EryzBot system.
+ * A task has a name, a type, and a status (marked or unmarked).
+ * It supports marking and unmarking the task as well as printing its details.
+ */
 public class Task implements Serializable {
     protected String name;
     protected String type;
@@ -25,7 +31,7 @@ public class Task implements Serializable {
         this.printTask();
     }
 
-    public void printTask(){
+    public void printTask() {
         String mark = isMarked ? "[X]" : "[ ]";
         System.out.print(type + mark + " " + name);
     }

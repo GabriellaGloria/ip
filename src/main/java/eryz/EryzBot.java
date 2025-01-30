@@ -2,6 +2,14 @@ package eryz;
 
 import java.util.Scanner;
 
+/**
+ * Represents the EryzBot application that interacts with the user to manage tasks.
+ * The bot allows users to add, delete, mark/unmark tasks, and display the task list.
+ * It loads tasks from a specified file and saves any updates back to the file.
+ *
+ * The bot reads user input from the console and provides feedback through a user interface.
+ * It supports commands like "bye", "list", "mark", "delete", and "unmark".
+ */
 public class EryzBot {
     private Storage storage;
     private TaskList tasks;

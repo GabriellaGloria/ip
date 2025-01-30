@@ -2,6 +2,11 @@ package eryz;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a list of tasks in the EryzBot system.
+ * This class provides methods to add, delete, mark, unmark tasks,
+ * and retrieve the list of tasks.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
 
