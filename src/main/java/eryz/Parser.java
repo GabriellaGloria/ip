@@ -14,6 +14,14 @@ public class Parser {
         }
     }
 
+    public static String parseFind(String input) throws EryzBotException {
+        String[] parts = input.split(" ", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new EryzBotException("Provide your keyword to find tasks.");
+        }
+        return parts[1].trim();
+    }
+    
     public static Task parseTask(String input) throws EryzBotException {
         if (input.toLowerCase().startsWith("todo")) {
             return TodoTask.todoTaskCreate(input);
