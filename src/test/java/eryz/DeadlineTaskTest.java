@@ -3,8 +3,11 @@ package eryz;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
+
+import eryz.exception.EryzBotException;
+import eryz.task.DeadlineTask;
+import eryz.task.Task;
 
 public class DeadlineTaskTest {
 

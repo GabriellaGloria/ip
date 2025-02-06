@@ -1,4 +1,4 @@
-package eryz;
+package eryz.exception;
 
 /**
  * Custom exception class for the EryzBot application.
