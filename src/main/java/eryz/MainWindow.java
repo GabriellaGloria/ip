@@ -47,10 +47,20 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = eryz.getResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getEryzBotDialog(response, eryzImage)
-        );
+        addDialogs(DialogBox.getUserDialog(input, userImage), DialogBox.getEryzBotDialog(response, eryzImage));
         userInput.clear();
     }
+    
+    /**
+     * Adds the given dialog boxes to the dialog container.
+     * 
+     * This method accepts a variable number of DialogBox objects 
+     * and adds them to the dialog container in the UI.
+     * 
+     * @param dialogs The DialogBox objects to be added to the container.
+     */
+    private void addDialogs(DialogBox... dialogs) {
+        dialogContainer.getChildren().addAll(dialogs);
+    }
+    
 }
