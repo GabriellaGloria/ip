@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 
+<!--
+    CS2103 SE-EDU Checkstyle
+    This configuration file enforces rules for the coding standard at
+    https://se-education.org/guides/conventions/java/intermediate.html
+-->
+
 <!DOCTYPE suppressions PUBLIC
     "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
