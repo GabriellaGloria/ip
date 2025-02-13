@@ -39,8 +39,7 @@ public class TodoTask extends Task {
      * It calls the parent method to print the task and then adds a line break for better readability.
      */
     @Override
-    public void printTask() {
-        super.printTask();  // Print the task using the parent class's printTask method
-        System.out.println("");  // Print a newline for readability
+    public String printTask() {
+        return super.printTask();  // Print the task using the parent class's printTask method
     }
 }

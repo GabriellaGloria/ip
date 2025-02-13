@@ -65,9 +65,8 @@ public class EventTask extends Task {
      * It calls the parent method to print the task description, followed by the formatted start and end dates.
      */
     @Override
-    public void printTask() {
-        super.printTask();  // Print the task using the parent class's printTask method
-        System.out.println(" (from: " + from.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
+    public String printTask() {
+        return super.printTask() + (" (from: " + from.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
                 + " to: " + to.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
     }
 }

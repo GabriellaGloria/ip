@@ -29,7 +29,7 @@ public class EventTaskTest {
     public void testEventTaskPrint() {
         String input = "event meeting cs2103T /from 2025-02-01 /to 2025-02-02";
         Task task = EventTask.eventTaskCreate(input);
-        task.printTask();
+        System.out.println(task.printTask());
         assertDoesNotThrow(() -> task.printTask());
     }
 }

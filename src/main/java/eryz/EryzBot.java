@@ -8,9 +8,9 @@ import eryz.task.Task;
  * It processes user input, manages tasks, and interacts with the storage system to persist data.
  */
 public class EryzBot {
-    private Storage storage;
-    private TaskList tasks;
-    private Ui ui;
+    private final Storage storage;
+    private final TaskList tasks;
+    private final Ui ui;
 
     /**
      * Constructs an EryzBot instance with a specified file path for storage.
@@ -19,19 +19,23 @@ public class EryzBot {
      * @param filePath The file path where tasks are stored.
      */
     public EryzBot(String filePath) {
-        ui = new Ui();
-        storage = new Storage(filePath);
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
+        this.tasks = loadTasks();
+    }
+
+    private TaskList loadTasks() {
         try {
-            tasks = new TaskList(storage.fetch());
+            return new TaskList(storage.fetch());
         } catch (EryzBotException e) {
             ui.showLoadingError();
-            tasks = new TaskList();
+            return new TaskList();
         }
     }
 
     /**
      * Processes the user input and returns an appropriate response.
-     * This method responds to commands such as "bye", "list", "find", "mark", "delete", "unmark", 
+     * This method responds to commands such as "bye", "list", "find", "mark", "delete", "unmark",
      * and adding new tasks. It also updates the task storage after modifying the task list.
      * 
      * @param input The user input command.
@@ -39,42 +43,78 @@ public class EryzBot {
      */
     public String getResponse(String input) {
         try {
-            if (input.equalsIgnoreCase("bye")) {
-                ui.exit();
-                return "Goodbye!";
-            } else if (input.equalsIgnoreCase("list")) {
-                if (tasks.size() == 0) {
-                    return "Your task list is empty.";
-                } else {
-                    return tasks.getTasks().toString(); // Display all tasks
-                }
-            } else if (input.toLowerCase().startsWith("find")) {
-                String keyword = Parser.parseFind(input);
-                return tasks.findTasks(keyword).toString(); // Display matching tasks
-            } else if (input.toLowerCase().startsWith("mark")) {
-                int idx = Parser.parseIndex(input);
-                tasks.markTask(idx);
-                storage.save(tasks.getTasks());
-                return "Marked task " + idx;
-            } else if (input.toLowerCase().startsWith("delete")) {
-                int idx = Parser.parseIndex(input);
-                tasks.deleteTask(idx);
-                storage.save(tasks.getTasks());
-                return "Deleted task " + idx;
-            } else if (input.toLowerCase().startsWith("unmark")) {
-                int idx = Parser.parseIndex(input);
-                tasks.unmarkTask(idx);
-                storage.save(tasks.getTasks());
-                return "Unmarked task " + idx;
-            } else {
-                Task newTask = Parser.parseTask(input);
-                tasks.addTask(newTask);
-                storage.save(tasks.getTasks());
-                return "Added task: " + newTask;
-            }
+            return handleCommand(input);
         } catch (EryzBotException e) {
             return e.getMessage();
         }
+    }
+
+    private String handleCommand(String input) throws EryzBotException {
+        String command = input.trim().toLowerCase();
+
+        return switch (command.split(" ")[0]) {
+            case "bye" -> handleExit();
+            case "list" -> handleList();
+            case "find" -> handleFind(input);
+            case "mark" -> handleMark(input);
+            case "delete" -> handleDelete(input);
+            case "unmark" -> handleUnmark(input);
+            default -> handleAddTask(input);
+        };
+    }
+
+    private String handleExit() {
+        ui.exit();
+        return "Goodbye!";
+    }
+
+    private String handleList() {
+        if (tasks.size() == 0) {
+            return ("Your task list is empty.");
+        }
+
+        String ret = "";
+        for (Task task : tasks.getTasks()) {
+            ret += (task.printTask() + "\n");
+        }
+        return ret;
+    }
+
+    private String handleFind(String input) throws EryzBotException {
+        String keyword = Parser.parseFind(input);
+        return tasks.findTasks(keyword).toString();
+    }
+
+    private String handleMark(String input) throws EryzBotException {
+        int idx = Parser.parseIndex(input);
+        tasks.markTask(idx);
+        saveTasks();
+        return "Marked task " + idx;
+    }
+
+    private String handleDelete(String input) throws EryzBotException {
+        int idx = Parser.parseIndex(input);
+        tasks.deleteTask(idx);
+        saveTasks();
+        return "Deleted task " + idx;
+    }
+
+    private String handleUnmark(String input) throws EryzBotException {
+        int idx = Parser.parseIndex(input);
+        tasks.unmarkTask(idx);
+        saveTasks();
+        return "Unmarked task " + idx;
+    }
+
+    private String handleAddTask(String input) throws EryzBotException {
+        Task newTask = Parser.parseTask(input);
+        tasks.addTask(newTask);
+        saveTasks();
+        return "Added task: " + newTask.printTask();
+    }
+
+    private void saveTasks() throws EryzBotException {
+        storage.save(tasks.getTasks());
     }
 
     /**
@@ -84,6 +124,7 @@ public class EryzBot {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        new EryzBot("./data/eryz.txt").getResponse("list"); 
+        EryzBot bot = new EryzBot("./data/eryz.txt");
+        System.out.println(bot.getResponse("list"));
     }
 }

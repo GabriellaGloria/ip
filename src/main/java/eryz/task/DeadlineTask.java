@@ -62,8 +62,7 @@ public class DeadlineTask extends Task {
      * It calls the parent method to print the task description, followed by the formatted deadline.
      */
     @Override
-    public void printTask() {
-        super.printTask();  // Print the task using the parent class's printTask method
-        System.out.println(" (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
+    public String printTask() {
+        return super.printTask() + (" (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
     }
 }
