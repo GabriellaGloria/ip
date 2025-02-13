@@ -1,5 +1,8 @@
 package eryz;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 import eryz.exception.EryzBotException;
 import eryz.task.Task;
 
@@ -95,13 +98,15 @@ public class EryzBot {
      */
     private String handleList() {
         if (tasks.size() == 0) {
-            return ("Your task list is empty.");
+            return "Your task list is empty.";
         }
 
-        String ret = "";
-        for (Task task : tasks.getTasks()) {
-            ret += (task.printTask() + "\n");
-        }
+        // Sort tasks by name
+        String ret = tasks.getTasks().stream()
+                .sorted(Comparator.comparing(Task::getName))
+                .map(task -> task.printTask())
+                .collect(Collectors.joining("\n"));
+
         return ret;
     }
 
