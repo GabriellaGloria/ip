@@ -38,6 +38,8 @@ public class EryzBot {
      * @return A string response to the user's command.
      */
     public String getResponse(String input) {
+        assert input != null : "Input should not be null";
+
         try {
             if (input.equalsIgnoreCase("bye")) {
                 ui.exit();

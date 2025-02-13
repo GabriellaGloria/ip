@@ -27,6 +27,8 @@ public class TodoTask extends Task {
      * @throws EryzBotException If the input is invalid or the task description is empty.
      */
     public static Task todoTaskCreate(String input) {
+        assert input != null : "Input should not be null";
+
         if (input.length() <= 5) {
             throw new EryzBotException("Todo task can't be empty!");  // Ensure the task description is not empty
         }

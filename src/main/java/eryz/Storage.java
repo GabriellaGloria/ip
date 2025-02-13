@@ -39,6 +39,7 @@ public class Storage {
     @SuppressWarnings("unchecked")
     public ArrayList<Task> fetch() throws EryzBotException {
         File file = new File(filepath);
+
         if (!file.exists() || file.length() == 0) {
             return new ArrayList<>();
         }
