@@ -23,6 +23,10 @@ public class EventTask extends Task {
      */
     public EventTask(String name, LocalDate from, LocalDate to) {
         super(name, "[E]");  // Call the parent constructor with the task description and type "[E]"
+        
+        assert from != null : "Start date cannot be null";
+        assert to != null : "End date cannot be null";
+
         this.from = from;
         this.to = to;
     }
@@ -37,6 +41,8 @@ public class EventTask extends Task {
      * @throws EryzBotException If the input format is invalid or any part of the input is empty.
      */
     public static Task eventTaskCreate(String input) {
+        assert input != null : "Input should not be null";
+        
         try {
             // Extract the task description, starting date, and ending date from the input
             String[] desc = input.substring(6).split(" /from | /to ", 3);

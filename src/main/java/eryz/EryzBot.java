@@ -48,6 +48,8 @@ public class EryzBot {
      * @throws EryzBotException If an error occurs while processing the command.
      */
     public String getResponse(String input) {
+        assert input != null : "Input should not be null";
+
         try {
             return handleCommand(input);
         } catch (EryzBotException e) {
