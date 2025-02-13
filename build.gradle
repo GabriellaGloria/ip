@@ -55,7 +55,7 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "eryz.jar"
+    archiveBaseName = "eryz"
     archiveClassifier = null
 }
 
