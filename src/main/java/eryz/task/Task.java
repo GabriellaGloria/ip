@@ -40,7 +40,7 @@ public class Task implements Serializable {
     public void mark() {
         System.out.println("This task is marked as done now, yay!");
         this.isMarked = true;
-        this.printTask();  // Print the task details after marking it
+        System.out.println(this.printTask());  // Print the task details after marking it
     }
 
     /**
@@ -50,15 +50,16 @@ public class Task implements Serializable {
     public void unmark() {
         System.out.println("This task is not done now, please do it soon!");
         this.isMarked = false;
-        this.printTask();  // Print the task details after unmarking it
+        System.out.println(this.printTask());  // Print the task details after unmarking it
     }
 
     /**
      * Prints the details of the task, including its type, mark status, and name.
      * It shows "[X]" if the task is marked and "[ ]" if it is unmarked.
      */
-    public void printTask() {
+    public String printTask() {
         String mark = isMarked ? "[X]" : "[ ]";  // If the task is marked, display "[X]", otherwise "[ ]"
-        System.out.print(type + mark + " " + name);
+        return (type + mark + " " + name);
     }
+
 }

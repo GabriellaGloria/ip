@@ -27,6 +27,8 @@ public class TodoTask extends Task {
      * @throws EryzBotException If the input is invalid or the task description is empty.
      */
     public static Task todoTaskCreate(String input) {
+        assert input != null : "Input should not be null";
+
         if (input.length() <= 5) {
             throw new EryzBotException("Todo task can't be empty!");  // Ensure the task description is not empty
         }
@@ -39,8 +41,7 @@ public class TodoTask extends Task {
      * It calls the parent method to print the task and then adds a line break for better readability.
      */
     @Override
-    public void printTask() {
-        super.printTask();  // Print the task using the parent class's printTask method
-        System.out.println("");  // Print a newline for readability
+    public String printTask() {
+        return super.printTask();  // Print the task using the parent class's printTask method
     }
 }

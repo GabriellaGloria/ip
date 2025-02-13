@@ -23,6 +23,9 @@ public class DeadlineTask extends Task {
      */
     public DeadlineTask(String name, LocalDate by) {
         super(name, "[D]");  // Call the parent constructor with the task description and type "[D]"
+        
+        assert by != null : "Start date cannot be null";
+
         this.by = by;
     }
 
@@ -36,6 +39,8 @@ public class DeadlineTask extends Task {
      * @throws EryzBotException If the input format is invalid or any part of the input is empty.
      */
     public static Task deadlineTaskCreate(String input) {
+        assert input != null : "Input should not be null";
+
         try {
             // Extract the task description and deadline from the input
             String[] desc = input.substring(9).split(" /by ", 2);
@@ -62,8 +67,7 @@ public class DeadlineTask extends Task {
      * It calls the parent method to print the task description, followed by the formatted deadline.
      */
     @Override
-    public void printTask() {
-        super.printTask();  // Print the task using the parent class's printTask method
-        System.out.println(" (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
+    public String printTask() {
+        return super.printTask() + (" (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")");
     }
 }

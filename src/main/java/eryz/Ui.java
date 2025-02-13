@@ -1,6 +1,7 @@
 package eryz;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import eryz.task.Task;
 
@@ -49,7 +50,7 @@ public class Ui {
      */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println("Added this task:");
-        task.printTask();
+        System.out.println(task.printTask());
         System.out.println("Now you have " + taskCount + " tasks in the list.");
     }
 
@@ -88,7 +89,7 @@ public class Ui {
      */
     public void showTaskList(ArrayList<Task> tasks) {
         for (int i = 0; i < tasks.size(); i++) {
-            tasks.get(i).printTask();
+            System.out.println(tasks.get(i).printTask());
         }
     }
 
@@ -101,11 +102,13 @@ public class Ui {
         if (matchingTasks.isEmpty()) {
             System.out.println("No tasks found.");
         } else {
-            System.out.println("Here, tasks that match your keyword:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.print((i + 1) + ".");
-                matchingTasks.get(i).printTask();
-            }
+            System.out.println("Here are tasks that match your keyword:");
+            IntStream.range(0, matchingTasks.size())
+                    .forEach(i -> {
+                        System.out.print((i + 1) + ". ");
+                        matchingTasks.get(i).printTask();
+                    });
         }
     }
+
 }
