@@ -24,6 +24,11 @@ public class EryzBot {
         this.tasks = loadTasks();
     }
 
+    /**
+     * Loads tasks from the storage system, or creates a new TaskList if loading fails.
+     * 
+     * @return A TaskList object containing the loaded tasks, or an empty TaskList if loading fails.
+     */
     private TaskList loadTasks() {
         try {
             return new TaskList(storage.fetch());
@@ -40,6 +45,7 @@ public class EryzBot {
      * 
      * @param input The user input command.
      * @return A string response to the user's command.
+     * @throws EryzBotException If an error occurs while processing the command.
      */
     public String getResponse(String input) {
         try {
@@ -49,6 +55,13 @@ public class EryzBot {
         }
     }
 
+    /**
+     * Handles the user command by parsing the input and determining which operation to perform.
+     * 
+     * @param input The user input command.
+     * @return The result of the command execution.
+     * @throws EryzBotException If an error occurs while handling the command.
+     */
     private String handleCommand(String input) throws EryzBotException {
         String command = input.trim().toLowerCase();
 
@@ -63,11 +76,21 @@ public class EryzBot {
         };
     }
 
+    /**
+     * Handles the "bye" command, which ends the application.
+     * 
+     * @return A farewell message to the user.
+     */
     private String handleExit() {
         ui.exit();
         return "Goodbye!";
     }
 
+    /**
+     * Handles the "list" command by returning a list of all tasks.
+     * 
+     * @return A string representation of the list of tasks, or a message if the list is empty.
+     */
     private String handleList() {
         if (tasks.size() == 0) {
             return ("Your task list is empty.");
@@ -80,11 +103,25 @@ public class EryzBot {
         return ret;
     }
 
+    /**
+     * Handles the "find" command by searching for tasks containing a specified keyword.
+     * 
+     * @param input The user input containing the search keyword.
+     * @return A string representation of the tasks containing the keyword.
+     * @throws EryzBotException If there is an issue parsing the input.
+     */
     private String handleFind(String input) throws EryzBotException {
         String keyword = Parser.parseFind(input);
         return tasks.findTasks(keyword).toString();
     }
 
+    /**
+     * Handles the "mark" command by marking a task as done.
+     * 
+     * @param input The user input containing the task index to mark.
+     * @return A message indicating the task was marked.
+     * @throws EryzBotException If there is an issue parsing the input or marking the task.
+     */
     private String handleMark(String input) throws EryzBotException {
         int idx = Parser.parseIndex(input);
         tasks.markTask(idx);
@@ -92,6 +129,13 @@ public class EryzBot {
         return "Marked task " + idx;
     }
 
+    /**
+     * Handles the "delete" command by deleting a specified task.
+     * 
+     * @param input The user input containing the task index to delete.
+     * @return A message indicating the task was deleted.
+     * @throws EryzBotException If there is an issue parsing the input or deleting the task.
+     */
     private String handleDelete(String input) throws EryzBotException {
         int idx = Parser.parseIndex(input);
         tasks.deleteTask(idx);
@@ -99,6 +143,13 @@ public class EryzBot {
         return "Deleted task " + idx;
     }
 
+    /**
+     * Handles the "unmark" command by unmarking a task as undone.
+     * 
+     * @param input The user input containing the task index to unmark.
+     * @return A message indicating the task was unmarked.
+     * @throws EryzBotException If there is an issue parsing the input or unmarking the task.
+     */
     private String handleUnmark(String input) throws EryzBotException {
         int idx = Parser.parseIndex(input);
         tasks.unmarkTask(idx);
@@ -106,6 +157,13 @@ public class EryzBot {
         return "Unmarked task " + idx;
     }
 
+    /**
+     * Handles adding a new task to the task list.
+     * 
+     * @param input The user input containing the task details.
+     * @return A message indicating the new task was added.
+     * @throws EryzBotException If there is an issue parsing the input or adding the task.
+     */
     private String handleAddTask(String input) throws EryzBotException {
         Task newTask = Parser.parseTask(input);
         tasks.addTask(newTask);
@@ -113,6 +171,11 @@ public class EryzBot {
         return "Added task: " + newTask.printTask();
     }
 
+    /**
+     * Saves the current list of tasks to the storage system.
+     * 
+     * @throws EryzBotException If an error occurs while saving tasks.
+     */
     private void saveTasks() throws EryzBotException {
         storage.save(tasks.getTasks());
     }
