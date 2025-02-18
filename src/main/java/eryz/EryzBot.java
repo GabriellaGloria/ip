@@ -88,7 +88,7 @@ public class EryzBot {
      */
     private String handleExit() {
         ui.exit();
-        return "Goodbye!";
+        return "Goodbye, see you again!";
     }
 
     /**
@@ -98,7 +98,7 @@ public class EryzBot {
      */
     private String handleList() {
         if (tasks.size() == 0) {
-            return "Your task list is empty.";
+            return "Your task list is empty. Congrats!!";
         }
 
         // Sort tasks by name
@@ -175,7 +175,7 @@ public class EryzBot {
         Task newTask = Parser.parseTask(input);
         tasks.addTask(newTask);
         saveTasks();
-        return "Added task: " + newTask.printTask();
+        return "Added task: " + newTask.printTask() + ", please do your tasks!";
     }
 
     /**
