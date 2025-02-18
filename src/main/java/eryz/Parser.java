@@ -60,7 +60,7 @@ public class Parser {
         } else if (input.toLowerCase().startsWith("event")) {
             return EventTask.eventTaskCreate(input);
         } else {
-            throw new EryzBotException("I don't recognize that task. Please input todo/deadline/event only!");
+            throw new EryzBotException("I don't even know that task. Please input valid todo/deadline/event only!");
         }
     }
 }
