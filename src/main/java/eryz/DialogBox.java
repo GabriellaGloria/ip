@@ -3,6 +3,7 @@ package eryz;
 import java.io.IOException;
 import java.util.Collections;
 
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
+
+
 
 /**
  * The DialogBox class is responsible for creating and displaying a dialog box
@@ -45,6 +49,20 @@ public class DialogBox extends HBox {
         // Set the dialog text and the display image.
         dialog.setText(text);
         displayPicture.setImage(img);
+        animateDialog();
+    }
+    
+    /**
+     * Applies a fade-in animation to the dialog box.
+     * This makes new dialog messages appear smoothly instead of instantly.
+     * The animation transitions the dialog from fully transparent (0 opacity)
+     * to fully visible (1 opacity) over 500 milliseconds.
+     */
+    private void animateDialog() {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), this);
+        fadeIn.setFromValue(0);  // Start fully transparent
+        fadeIn.setToValue(1);    // Fade to fully visible
+        fadeIn.play();
     }
 
     /**
