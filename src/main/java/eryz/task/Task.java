@@ -2,6 +2,8 @@ package eryz.task;
 
 import java.io.Serializable;
 
+import eryz.exception.EryzBotException;
+
 /**
  * Represents a task in the EryzBot system.
  * A task has a name, a type, and a status (marked or unmarked).
@@ -17,12 +19,17 @@ public class Task implements Serializable {
      *
      * @param name The description of the task.
      * @param type The type of the task (e.g., "[T]", "[D]", "[E]").
+     * @throws EryzBotException If the input format is invalid or any part of the input is empty.
      */
     public Task(String name, String type) {
+        if (name == null) {
+            throw new EryzBotException("Task name cannot be empty.");
+        }
         this.name = name;
         this.type = type;
         this.isMarked = false;  // By default, the task is unmarked
     }
+    
 
     /**
      * Returns the name (description) of the task.
