@@ -102,25 +102,32 @@ public class EryzBot {
         }
 
         // Sort tasks by name
-        String ret = tasks.getTasks().stream()
+        String result = tasks.getTasks().stream()
                 .sorted(Comparator.comparing(Task::getName))
                 .map(task -> task.printTask())
                 .collect(Collectors.joining("\n"));
 
-        return ret;
+        return result;
     }
 
     /**
      * Handles the "find" command by searching for tasks containing a specified keyword.
      * 
      * @param input The user input containing the search keyword.
-     * @return A string representation of the tasks containing the keyword.
+     * @return A string representation of the tasks containing the keyword, or a message if no tasks are found.
      * @throws EryzBotException If there is an issue parsing the input.
      */
     private String handleFind(String input) throws EryzBotException {
-        String keyword = Parser.parseFind(input);
-        return tasks.findTasks(keyword).toString();
+        String keyword = Parser.parseFind(input); // Parse the keyword from the input
+
+        String result = tasks.findTasks(keyword).stream()
+                .sorted(Comparator.comparing(Task::getName))
+                .map(task -> task.printTask())
+                .collect(Collectors.joining("\n"));
+
+        return result;
     }
+
 
     /**
      * Handles the "mark" command by marking a task as done.
